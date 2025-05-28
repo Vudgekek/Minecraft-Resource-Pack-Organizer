@@ -1,6 +1,7 @@
 package chylex.respack.gui;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -25,7 +26,6 @@ import chylex.respack.ResourcePackOrganizer;
 import chylex.respack.packs.ResourcePackListEntryFolder;
 import chylex.respack.packs.ResourcePackListProcessor;
 import chylex.respack.render.RenderPackListOverlay;
-import chylex.respack.repository.ResourcePackRepositoryCustom;
 import com.google.common.collect.Lists;
 
 @SideOnly(Side.CLIENT)
@@ -256,14 +256,15 @@ public class GuiCustomResourcePacks extends GuiScreenResourcePacks{
 					list.add(new ResourcePackListEntryFolder(this,file));
 				}
 				else{
-					Entry entry = ResourcePackRepositoryCustom.createEntryInstance(repository,file);
-					
-					if (entry != null){
-						try{
-							entry.updateResourcePack();
-							list.add(new ResourcePackListEntryFound(this,entry));
-						}catch(Exception e){}
-					}
+					try{
+						Constructor<Entry> constructor = Entry.class.getDeclaredConstructor(ResourcePackRepository.class,File.class);
+						constructor.setAccessible(true);
+						
+						Entry entry = constructor.newInstance(repository,file);
+						entry.updateResourcePack();
+						list.add(new ResourcePackListEntryFound(this,entry));
+					}catch(Throwable t){
+						t.printStackTrace();
 				}
 			}
 		}
