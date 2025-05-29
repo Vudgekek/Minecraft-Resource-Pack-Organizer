@@ -42,8 +42,8 @@ public class GuiCustomResourcePacks extends GuiScreenResourcePacks{
     private File currentFolder;
     private GuiButton selectedButton;
     private boolean hasUpdated, requiresReload;
-    
-    private Comparator<ResourcePackListEntry> currentSorter;
+
+	private Comparator<ResourcePackListEntry> currentSorter;
 	
 	public GuiCustomResourcePacks(GuiScreen parentScreen){
 		super(parentScreen);
@@ -64,7 +64,7 @@ public class GuiCustomResourcePacks extends GuiScreenResourcePacks{
 		String prevText = searchField == null ? "" : searchField.getText();
 		searchField = new GuiTextField(30,fontRendererObj,width/2-203,height-46,198,16);
 		searchField.setText(prevText);
-		
+
 		if (!requiresReload){
 			listPacksAvailable = Lists.newArrayListWithCapacity(8);
 			listPacksAvailableProcessed = Lists.newArrayListWithCapacity(8);
@@ -159,7 +159,7 @@ public class GuiCustomResourcePacks extends GuiScreenResourcePacks{
 		}catch(NullPointerException e){
 			// calls super.handleMouseInput and then attempts to use selectedResourcePacksList and availableResourcePacksList which are null
 		}
-		
+
 		guiPacksAvailable.handleMouseInput();
 		guiPacksSelected.handleMouseInput();
 	}
@@ -265,6 +265,7 @@ public class GuiCustomResourcePacks extends GuiScreenResourcePacks{
 						list.add(new ResourcePackListEntryFound(this,entry));
 					}catch(Throwable t){
 						t.printStackTrace();
+					}
 				}
 			}
 		}
@@ -306,7 +307,7 @@ public class GuiCustomResourcePacks extends GuiScreenResourcePacks{
 		hasUpdated = true;
 		return listPacksSelected;
 	}
-	
+
 	@Override
 	public void markChanged(){
 		requiresReload = true;
